@@ -41,11 +41,46 @@ const postEmployeeDepartmentBodySchema = {
     }).unknown(false)
 }
 
+const postEmployeeRoleBodySchema = {
+    body: joi.object().keys({
+        roleId: joi.number().required()
+    }).unknown(false)
+}
+
+const postEmployeeAddressSchema = {
+    body: joi.object().keys({
+        houseName: joi.string().max(128).required(),
+        city: joi.string().max(128).required(),
+        state: joi.string().max(128).required(),
+        pincode: joi.number().required(),
+        street: joi.string().max(128).required()
+    }).unknown(false)
+}
+
+
+// Validation for roles
+const postRoleBodySchema = {
+    body: joi.object().keys({
+        role: joi.string().max(128).required()
+    }).unknown(false)
+}
+
+const editRoleBodySchema = {
+    body: joi.object().keys({
+        role: joi.string().max(128).required()
+    }).unknown(false)
+}
+
 module.exports = {
     idParamsSchema,
     postEmployeeBodySchema,
     editEmployeeBodySchema,
     postDepartmentBodySchema,
     editDepartmentBodySchema,
-    postEmployeeDepartmentBodySchema
+    postEmployeeDepartmentBodySchema,
+
+    postRoleBodySchema,
+    editRoleBodySchema,
+    postEmployeeRoleBodySchema,
+    postEmployeeAddressSchema
 };

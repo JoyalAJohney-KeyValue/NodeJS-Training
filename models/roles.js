@@ -2,11 +2,11 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const Department = sequelize.define('department', {
-    name: {
+const Role = sequelize.define('role', {
+    role: {
         type: Sequelize.STRING,
         allowNull:false
     }
 });
 
-module.exports = Department; 
+module.exports = Role;

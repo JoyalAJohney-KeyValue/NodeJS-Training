@@ -1,5 +1,7 @@
 const Employee = require('../models/employees');
 const EmpDept = require('../models/employeeDepartment');
+const EmpRole = require('../models/employeeRole');
+const EmployeeAddress = require('../models/employeeAddress');
 const bcrypt = require('bcrypt');
 const loginConstants =  require('../constants/login.constants');
 
@@ -94,6 +96,84 @@ exports.postEmployeeDepartment = (req, resp, next) => {
         });
     });
 };
+
+exports.postEmployeeRole = (req, resp, next) => {
+    const empId = req.params.id;
+    const roleId = req.body.roleId;
+ 
+    EmpRole.create({
+        empId: empId,
+        roleId: roleId
+    }).then(employeeRole => {
+        resp.status(200).json({
+            message: `Role ${employeeRole.roleId} added for employee ${employeeRole.empId}`
+        });
+    }).catch(err => {
+        console.log(err);
+        resp.status(404).json({
+            message: 'Adding department for employee failed'
+        });
+    });
+};
+
+exports.postEmployeeAddress = (req, res, next) => {
+    const empId = req.params.id;
+    const houseName = req.body.houseName;
+    const city = req.body.city;
+    const state = req.body.state;
+    const pincode = req.body.pincode;
+    const street = req.body.street;
+
+    EmployeeAddress.create({
+        empId: empId,
+        houseName: houseName,
+        city: city,
+        state: state,
+        pincode: pincode,
+        street: street
+    }).then(employeeAddress => {
+        res.status(200).json({
+            message: "Employee Address added successfully",
+            employeeAddress
+        })
+    }).catch(err => {
+        console.log(err)
+        res.status(404).json({
+            message: "Adding employee address failed"
+        })
+    }) 
+}
+
+exports.editEmployeeAddress = (req, res, next) => {
+    const empId = req.params.id;
+    const houseName = req.body.houseName;
+    const city = req.body.city;
+    const state = req.body.state;
+    const pincode = req.body.pincode;
+    const street = req.body.street;
+
+    EmployeeAddress.findByPk(empId)
+        .then(address => {
+            address.houseName = houseName,
+            address.city = city,
+            address.state = state,
+            address.pincode = pincode,
+            address.street = street
+            return address.save();
+        })
+        .then(address => {
+            res.status(200).json({
+                message: "Employee Address updated successfully",
+                address
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(404).json({
+                message: "Employee adrress updation failed"
+            })
+        })
+}
 
 exports.editEmployee = (req, resp, next) => {
     const id = req.params.id;
